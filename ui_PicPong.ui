@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>592</width>
+    <width>565</width>
     <height>360</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>61</width>
+     <width>41</width>
      <height>361</height>
     </rect>
    </property>
@@ -37,10 +37,10 @@
    <widget class="QPushButton" name="pushButtonCut">
     <property name="geometry">
      <rect>
-      <x>5</x>
+      <x>10</x>
       <y>10</y>
-      <width>50</width>
-      <height>50</height>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
@@ -50,10 +50,10 @@
    <widget class="QPushButton" name="pushButtonView">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>74</y>
-      <width>50</width>
-      <height>50</height>
+      <x>10</x>
+      <y>50</y>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
@@ -63,10 +63,10 @@
    <widget class="QPushButton" name="pushButtonSet">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>140</y>
-      <width>50</width>
-      <height>50</height>
+      <x>10</x>
+      <y>90</y>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
@@ -76,10 +76,10 @@
    <widget class="QPushButton" name="pushButtonConfig">
     <property name="geometry">
      <rect>
-      <x>5</x>
-      <y>300</y>
-      <width>50</width>
-      <height>50</height>
+      <x>10</x>
+      <y>320</y>
+      <width>20</width>
+      <height>20</height>
      </rect>
     </property>
     <property name="text">
@@ -90,9 +90,9 @@
   <widget class="QWidget" name="widgetView" native="true">
    <property name="geometry">
     <rect>
-     <x>62</x>
+     <x>42</x>
      <y>-1</y>
-     <width>531</width>
+     <width>551</width>
      <height>361</height>
     </rect>
    </property>
@@ -111,10 +111,10 @@
    <widget class="QPushButton" name="pushButtonUpload">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>10</y>
-      <width>471</width>
-      <height>311</height>
+      <x>90</x>
+      <y>60</y>
+      <width>361</width>
+      <height>201</height>
      </rect>
     </property>
     <property name="text">

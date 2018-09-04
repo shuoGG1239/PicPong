@@ -8,12 +8,13 @@ import os
 import json
 
 # 资源路径
-CUT_ICON_URL = './asset/scissors.png'
-CONFIG_ICON_URL = './asset/config.png'
-SET_ICON_URL = './asset/set.png'
-VIEW_ICON_URL = './asset/view.png'
-OPEN_FILE_ICON_URL = './asset/file.png'
-FRAME_FILE_ICON_URL = './asset/frame.png'
+ROOT_URL = './asset/'
+CUT_ICON_URL = 'scissors.png'
+CONFIG_ICON_URL = 'config.png'
+SET_ICON_URL = 'set.png'
+VIEW_ICON_URL = 'view.png'
+OPEN_FILE_ICON_URL = 'file.png'
+FRAME_FILE_ICON_URL = 'frame.png'
 
 
 @colorful('blueGreen')
@@ -25,16 +26,26 @@ class PicPong(QWidget):
         QWidget.__init__(self)
         self.ui = ui_PicPong.Ui_picPong()
         self.ui.setupUi(self)
-        self.beautify_button0(self.ui.pushButtonCut, CUT_ICON_URL)
-        self.beautify_button0(self.ui.pushButtonSet, SET_ICON_URL)
-        self.beautify_button0(self.ui.pushButtonView, VIEW_ICON_URL)
-        self.beautify_button0(self.ui.pushButtonConfig, CONFIG_ICON_URL)
-        self.beautify_button0(self.ui.pushButtonUpload, FRAME_FILE_ICON_URL)
         self.__init_style()
+
+    def __btn_style3(self):
+        self.beautify_button3(self.ui.pushButtonCut, ROOT_URL, 'scissors.png', 'scissors.png', 'scissors.png', 'scissors.png')
+        self.beautify_button3(self.ui.pushButtonSet, ROOT_URL, 'set.png', 'set.png', 'set.png', 'set.png')
+        self.beautify_button3(self.ui.pushButtonView, ROOT_URL, 'view.png', 'view.png', 'view.png', 'view.png')
+        self.beautify_button3(self.ui.pushButtonConfig, ROOT_URL, 'config.png', 'config_hover.png', 'config.png', 'config.png')
+        self.beautify_button3(self.ui.pushButtonUpload, ROOT_URL, 'frame.png', 'frame.png', 'frame.png', 'frame.png')
+
+    def __btn_style1(self):
+        self.beautify_button(self.ui.pushButtonCut, ROOT_URL + 'scissors.png')
+        self.beautify_button(self.ui.pushButtonSet, ROOT_URL + 'set.png')
+        self.beautify_button(self.ui.pushButtonView, ROOT_URL + 'view.png')
+        self.beautify_button(self.ui.pushButtonConfig, ROOT_URL + 'config.png')
+        self.beautify_button(self.ui.pushButtonUpload, ROOT_URL + 'frame.png')
 
     def __init_style(self):
         self.ui.widgetSide.setStyleSheet("QWidget{background: #33CCCC;border:none}")
         self.ui.widgetView.setStyleSheet("QWidget#widgetView{background: #FFFFFF;border:none}")
+        self.__btn_style1()
 
     @pyqtSlot()
     def on_pushButtonCut_clicked(self):
@@ -77,7 +88,7 @@ class PicPong(QWidget):
 
     def beautify_button0(self, button, image_url):
         """
-        美化按键
+        美化按键(背景透明)
         :param button:  QPushButton
         :param image_url: str
         :return: None
@@ -110,3 +121,17 @@ class PicPong(QWidget):
             print('upload failed! Reason:' + result['msg'])
         else:
             print("upload failed! Unknown reason...")
+
+    def beautify_button3(self, button, root, norm, hover, press, disable):
+        qss = str()
+        qss += "QPushButton{background:transparent; border-image:url(%s); border:none}" % (
+            root + norm)
+        qss += "QPushButton:hover{background:transparent; border-image:url(%s)}" % (
+            root + hover)
+        qss += "QPushButton:pressed{background:transparent; border-image:url(%s)}" % (
+            root + press)
+        qss += "QPushButton:disabled{background:transparent; border-image:url(%s)}" % (
+            root + disable)
+        button.setStyleSheet(qss)
+        button.setText('')
+        button.setFlat(True)
