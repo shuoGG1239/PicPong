@@ -32,10 +32,9 @@ class PicPong(QWidget):
         self.beautify_button0(self.ui.pushButtonUpload, FRAME_FILE_ICON_URL)
         self.__init_style()
 
-
     def __init_style(self):
         self.ui.widgetSide.setStyleSheet("QWidget{background: #33CCCC;border:none}")
-
+        self.ui.widgetView.setStyleSheet("QWidget#widgetView{background: #FFFFFF;border:none}")
 
     @pyqtSlot()
     def on_pushButtonCut_clicked(self):
@@ -55,8 +54,13 @@ class PicPong(QWidget):
 
     @pyqtSlot()
     def on_pushButtonUpload_clicked(self):
-        print("upload")
-        # self.upload_image()
+        img_full_path = QFileDialog.getOpenFileName()[0]
+        if img_full_path is None or img_full_path == '':
+            return
+        _, name = os.path.split(img_full_path)
+        view_url = self.upload_image(img_full_path)
+        md_url = '![%s](%s)' % (name, view_url)
+        self.ui.lineEdit.setText(md_url)
 
     def beautify_button(self, button, image_url):
         """
@@ -86,8 +90,8 @@ class PicPong(QWidget):
         button.setIconSize(QSize(icon_width, icon_width))
         button.setFlat(True)
 
-    def upload_image(self):
-        files_map = [('smfile', r'E:\Picture\menhera\26765571@2x.png')]
+    def upload_image(self, image_path):
+        files_map = [('smfile', image_path)]
         params = {
             'ssl': False,
             'format': 'png'
@@ -101,6 +105,7 @@ class PicPong(QWidget):
             del_url = result['data']['delete']
             print(view_url)
             print(del_url)
+            return view_url
         elif result['code'] == 'error':
             print('upload failed! Reason:' + result['msg'])
         else:
