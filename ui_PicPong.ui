@@ -34,7 +34,7 @@
      <height>2000</height>
     </size>
    </property>
-   <widget class="QPushButton" name="pushButtonCut">
+   <widget class="QPushButton" name="pushButtonUp">
     <property name="geometry">
      <rect>
       <x>8</x>
@@ -60,7 +60,7 @@
      <string>2</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButtonSet">
+   <widget class="QPushButton" name="pushButtonCut">
     <property name="geometry">
      <rect>
       <x>8</x>
