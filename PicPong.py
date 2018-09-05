@@ -28,6 +28,11 @@ class PicPong(QWidget):
         self.ui.setupUi(self)
         self.__init_style()
 
+    def __init_style(self):
+        self.ui.widgetSide.setStyleSheet("QWidget{background: #33CCCC;border:none}")
+        self.ui.widgetView.setStyleSheet("QWidget#widgetView{background: #FFFFFF;border:none}")
+        self.__btn_style3()
+
     def __btn_style3(self):
         self.beautify_button3(self.ui.pushButtonCut, ROOT_URL, 'scissors.png', 'scissors.png', 'scissors.png', 'scissors.png')
         self.beautify_button3(self.ui.pushButtonSet, ROOT_URL, 'set.png', 'set.png', 'set.png', 'set.png')
@@ -42,10 +47,18 @@ class PicPong(QWidget):
         self.beautify_button(self.ui.pushButtonConfig, ROOT_URL + 'config.png')
         self.beautify_button(self.ui.pushButtonUpload, ROOT_URL + 'frame.png')
 
-    def __init_style(self):
-        self.ui.widgetSide.setStyleSheet("QWidget{background: #33CCCC;border:none}")
-        self.ui.widgetView.setStyleSheet("QWidget#widgetView{background: #FFFFFF;border:none}")
-        self.__btn_style1()
+    def beautify_button3(self, button, root, norm, hover, press, disable):
+        qss = str()
+        qss += "QPushButton{background:transparent; background-image:url(%s); border:none}" % (
+            root + norm)
+        qss += "QPushButton:hover{background:transparent; background-image:url(%s)}" % (
+            root + hover)
+        qss += "QPushButton:pressed{background:transparent; background-image:url(%s)}" % (
+            root + press)
+        qss += "QPushButton:disabled{background:transparent; background-image:url(%s)}" % (
+            root + disable)
+        button.setStyleSheet(qss)
+        button.setText('')
 
     @pyqtSlot()
     def on_pushButtonCut_clicked(self):
@@ -121,17 +134,3 @@ class PicPong(QWidget):
             print('upload failed! Reason:' + result['msg'])
         else:
             print("upload failed! Unknown reason...")
-
-    def beautify_button3(self, button, root, norm, hover, press, disable):
-        qss = str()
-        qss += "QPushButton{background:transparent; border-image:url(%s); border:none}" % (
-            root + norm)
-        qss += "QPushButton:hover{background:transparent; border-image:url(%s)}" % (
-            root + hover)
-        qss += "QPushButton:pressed{background:transparent; border-image:url(%s)}" % (
-            root + press)
-        qss += "QPushButton:disabled{background:transparent; border-image:url(%s)}" % (
-            root + disable)
-        button.setStyleSheet(qss)
-        button.setText('')
-        button.setFlat(True)
