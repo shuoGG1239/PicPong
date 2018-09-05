@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>565</width>
-    <height>360</height>
+    <width>490</width>
+    <height>329</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,13 +19,13 @@
      <x>0</x>
      <y>0</y>
      <width>41</width>
-     <height>361</height>
+     <height>331</height>
     </rect>
    </property>
    <property name="minimumSize">
     <size>
      <width>40</width>
-     <height>361</height>
+     <height>200</height>
     </size>
    </property>
    <property name="maximumSize">
@@ -77,61 +77,13 @@
     <property name="geometry">
      <rect>
       <x>8</x>
-      <y>320</y>
+      <y>291</y>
       <width>25</width>
       <height>25</height>
      </rect>
     </property>
     <property name="text">
      <string>c</string>
-    </property>
-   </widget>
-  </widget>
-  <widget class="QWidget" name="widgetView" native="true">
-   <property name="geometry">
-    <rect>
-     <x>42</x>
-     <y>-1</y>
-     <width>551</width>
-     <height>361</height>
-    </rect>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>491</width>
-     <height>361</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>2000</width>
-     <height>2000</height>
-    </size>
-   </property>
-   <widget class="QPushButton" name="pushButtonUpload">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>60</y>
-      <width>361</width>
-      <height>201</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Upload</string>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="lineEdit">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>325</y>
-      <width>521</width>
-      <height>31</height>
-     </rect>
-    </property>
-    <property name="readOnly">
-     <bool>true</bool>
     </property>
    </widget>
   </widget>

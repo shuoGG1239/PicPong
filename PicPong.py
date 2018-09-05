@@ -1,11 +1,12 @@
 import ui_PicPong
-from PyQt5.QtCore import pyqtSlot, QFileInfo, pyqtSignal, QBuffer, QByteArray, QIODevice, QSize
+from PyQt5.QtCore import pyqtSlot, QFileInfo, pyqtSignal, QBuffer, QByteArray, QIODevice, QSize, QRect
 from PyQt5.QtGui import QMovie, QPixmap, QIcon
 from PyQt5.QtWidgets import QWidget, QFileDialog, QLabel
 from QCandyUi.CandyWindow import colorful
 import requests
 import os
 import json
+from UploadWidget import UploadWidget
 
 # 资源路径
 ROOT_URL = './asset/'
@@ -26,26 +27,27 @@ class PicPong(QWidget):
         QWidget.__init__(self)
         self.ui = ui_PicPong.Ui_picPong()
         self.ui.setupUi(self)
+        self.widgetUpload = UploadWidget(self)
+        self.widgetUpload.setGeometry(QRect(41, 0, 450, 360))
         self.__init_style()
+
 
     def __init_style(self):
         self.ui.widgetSide.setStyleSheet("QWidget{background: #33CCCC;border:none}")
-        self.ui.widgetView.setStyleSheet("QWidget#widgetView{background: #FFFFFF;border:none}")
+        self.widgetUpload.setStyleSheet("QWidget#uploadWidget{background: #FFFFFF;border:none}")
         self.__btn_style3()
 
     def __btn_style3(self):
-        self.beautify_button3(self.ui.pushButtonCut, ROOT_URL, 'scissors.png', 'scissors.png', 'scissors.png', 'scissors.png')
-        self.beautify_button3(self.ui.pushButtonSet, ROOT_URL, 'set.png', 'set.png', 'set.png', 'set.png')
-        self.beautify_button3(self.ui.pushButtonView, ROOT_URL, 'view.png', 'view.png', 'view.png', 'view.png')
+        self.beautify_button3(self.ui.pushButtonCut, ROOT_URL, 'scissors.png', 'scissors_hover.png', 'scissors.png', 'scissors.png')
+        self.beautify_button3(self.ui.pushButtonSet, ROOT_URL, 'set.png', 'set_hover.png', 'set.png', 'set.png')
+        self.beautify_button3(self.ui.pushButtonView, ROOT_URL, 'view.png', 'view_hover.png', 'view.png', 'view.png')
         self.beautify_button3(self.ui.pushButtonConfig, ROOT_URL, 'config.png', 'config_hover.png', 'config.png', 'config.png')
-        self.beautify_button3(self.ui.pushButtonUpload, ROOT_URL, 'frame.png', 'frame.png', 'frame.png', 'frame.png')
 
     def __btn_style1(self):
         self.beautify_button(self.ui.pushButtonCut, ROOT_URL + 'scissors.png')
         self.beautify_button(self.ui.pushButtonSet, ROOT_URL + 'set.png')
         self.beautify_button(self.ui.pushButtonView, ROOT_URL + 'view.png')
         self.beautify_button(self.ui.pushButtonConfig, ROOT_URL + 'config.png')
-        self.beautify_button(self.ui.pushButtonUpload, ROOT_URL + 'frame.png')
 
     def beautify_button3(self, button, root, norm, hover, press, disable):
         qss = str()
