@@ -39,6 +39,8 @@ class CaptureScreen(QWidget):
         if event.button() == Qt.LeftButton:
             self.is_mouse_pressed = True
             self.begin_pos = event.pos()
+        if event.button() == Qt.RightButton:
+            self.close()
         return QWidget.mousePressEvent(self, event)
 
     def mouseMoveEvent(self, event):

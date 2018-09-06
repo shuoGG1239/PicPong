@@ -31,14 +31,26 @@ class UploadWidget(QWidget):
         self.__init_style()
 
     def __init_style(self):
+        """
+        带button外壳的imageButton
+        :return:
+        """
         self.setStyleSheet("QWidget#widgetView{background: #FFFFFF;border:none}")
         self.__btn_style3()
 
-    def __btn_style3(self):
-        self.beautify_button3(self.ui.pushButtonUpload, ROOT_URL, 'upload.png', 'upload_hover.png', 'upload.png', 'upload.png')
-
     def __btn_style1(self):
+        """
+        只带图片的imageButton, 但只有单态
+        :return:
+        """
         self.beautify_button(self.ui.pushButtonUpload, ROOT_URL + 'upload.png')
+
+    def __btn_style3(self):
+        """
+        三态button
+        :return:
+        """
+        self.beautify_button3(self.ui.pushButtonUpload, ROOT_URL, 'upload.png', 'upload_hover.png', 'upload.png', 'upload.png')
 
     def beautify_button3(self, button, root, norm, hover, press, disable):
         qss = str()
