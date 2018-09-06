@@ -1,4 +1,5 @@
 import threading
+
 import ui_UploadWidget
 from PyQt5.QtCore import pyqtSlot, QFileInfo, pyqtSignal, QBuffer, QByteArray, QIODevice, QSize
 from PyQt5.QtGui import QMovie, QPixmap, QIcon
@@ -6,6 +7,8 @@ from PyQt5.QtWidgets import QWidget, QFileDialog, QLabel
 import requests
 import os
 import json
+from util import system_util
+from util import sm_util
 
 # 资源路径
 ROOT_URL = './asset/'
@@ -15,6 +18,7 @@ LOADING_GIF_URL = 'loading.gif'
 
 class UploadWidget(QWidget):
     signal_response = pyqtSignal(str)  # sm应答信号
+    signal_img = pyqtSignal(QPixmap)
 
     def __init__(self, parent):
         QWidget.__init__(self, parent)
@@ -51,13 +55,13 @@ class UploadWidget(QWidget):
 
     @pyqtSlot()
     def on_pushButtonUpload_clicked(self):
+        self.ui.lineEdit.clear()
         img_full_path = QFileDialog.getOpenFileName()[0]
         if img_full_path is None or img_full_path == '':
             return
         _, name = os.path.split(img_full_path)
-        view_url = self.upload_image(img_full_path)
-        md_url = '![%s](%s)' % (name, view_url)
-        self.ui.lineEdit.setText(md_url)
+        self.signal_img.emit(QPixmap(img_full_path))
+        self.run_upload_async(img_full_path)
 
     def beautify_button(self, button, image_url):
         """
@@ -88,37 +92,21 @@ class UploadWidget(QWidget):
         button.setFlat(True)
 
     def upload_image(self, image_path):
-        resp_json = str()
+        result_dict = dict()
         try:
-            files_map = [('smfile', image_path)]
-            params = {
-                'ssl': False,
-                'format': 'png'
-            }
-            multi_files = list(map(lambda x: (x[0], (os.path.split(x[1])[1], open(x[1], 'rb'))), files_map))
-            resp = requests.post("https://sm.ms/api/upload", data=params, files=multi_files)
-            print(resp.text)
-            result = json.loads(resp.text)
-            if result['code'] == 'success':
-                view_url = result['data']['url']
-                del_url = result['data']['delete']
-                resp_json = json.dumps({'url': view_url, 'delete': del_url})
-                print(view_url)
-                print(del_url)
-                return view_url
-            elif result['code'] == 'error':
-                print('upload failed! Reason:' + result['msg'])
-            else:
-                print("upload failed! Unknown reason...")
+            result_dict = sm_util.upload_img(image_path)
+            return result_dict['url']
         finally:
-            self.signal_response.emit(resp_json)
+            self.signal_response.emit(json.dumps(result_dict))
 
     @pyqtSlot(str)
     def __slot_sm_response(self, resp_json):
         self.loadingLabel.hide()
         if resp_json is not '':
             ret = json.loads(resp_json)
-            self.ui.lineEdit.setText(ret['url'])
+            md_image = '![' + ret['filename'] + '](' + ret['url'] + ')'
+            self.ui.lineEdit.setText(md_image)
+            system_util.set_clipboard_text(md_image)
 
     def __init_loading_gif(self):
         """
@@ -144,9 +132,11 @@ class UploadWidget(QWidget):
 
     def dropEvent(self, event):
         if (event.mimeData().hasUrls()):
+            self.ui.lineEdit.clear()
             urlList = event.mimeData().urls()
             fileInfo = QFileInfo(urlList[0].toLocalFile())
             img_full_path = fileInfo.filePath()
+            self.signal_img.emit(QPixmap(img_full_path))
             self.run_upload_async(img_full_path)
             event.acceptProposedAction()
 

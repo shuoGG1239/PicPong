@@ -7,6 +7,7 @@ import requests
 import os
 import json
 from UploadWidget import UploadWidget
+from ViewWidget import ViewWidget
 
 # 资源路径
 ROOT_URL = './asset/'
@@ -20,15 +21,17 @@ FRAME_FILE_ICON_URL = 'frame.png'
 
 @colorful('blueGreen')
 class PicPong(QWidget):
-    signal1 = pyqtSignal()  # 定义信号
-    signal2 = pyqtSignal(int)  # 定义信息
-
     def __init__(self):
         QWidget.__init__(self)
         self.ui = ui_PicPong.Ui_picPong()
         self.ui.setupUi(self)
         self.widgetUpload = UploadWidget(self)
         self.widgetUpload.setGeometry(QRect(41, 0, 450, 360))
+        self.widgetView = ViewWidget(self)
+        self.widgetView.setGeometry(QRect(41, 0, 450, 360))
+        self.widgetView.hide()
+        self.widgetUpload.signal_img.connect(self.widgetView.slot_recv_img)
+        self.widgetUpload.signal_response.connect(self.widgetView.slot_recv_resp)
         self.__init_style()
 
     def __init_style(self):
@@ -64,7 +67,7 @@ class PicPong(QWidget):
     @pyqtSlot()
     def on_pushButtonUp_clicked(self):
         self.widgetUpload.show()
-        print("up")
+        self.widgetView.hide()
 
     @pyqtSlot()
     def on_pushButtonCut_clicked(self):
@@ -72,7 +75,8 @@ class PicPong(QWidget):
 
     @pyqtSlot()
     def on_pushButtonView_clicked(self):
-        print("view")
+        self.widgetUpload.hide()
+        self.widgetView.show()
 
     @pyqtSlot()
     def on_pushButtonConfig_clicked(self):
@@ -105,4 +109,3 @@ class PicPong(QWidget):
         icon_width = button.height() >> 1
         button.setIconSize(QSize(icon_width, icon_width))
         button.setFlat(True)
-
