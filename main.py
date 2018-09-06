@@ -11,7 +11,10 @@ if __name__ == '__main__':
     mainWindow.setWindowIcon(QIcon('shuoGG_re'))
     mainWindow.setStyleSheet("QFrame#WindowWithTitleBar{background: #33CCCC}")
     mainWindow.setStyleSheet("QWidget#uploadWidget{background: #FFFFFF}")
+    # fixSize
     mainWindow.setSupportStretch(False)
     mainWindow.setMaxEnable(False)
+    # 不然快捷键失效
+    mainWindow.mainwidget.setFocus()
     mainWindow.show()
     sys.exit(app.exec_())

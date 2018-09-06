@@ -52,6 +52,11 @@ class CaptureScreen(QWidget):
         self.is_mouse_pressed = False
         return QWidget.mouseReleaseEvent(self, event)
 
+    def mouseDoubleClickEvent(self, event):
+        if self.capture_pixmap is not None:
+            self.signal_complete_capture.emit(self.capture_pixmap)
+            self.close()
+
     def paintEvent(self, event):
         self.painter.begin(self)
         shadow_color = QColor(0, 0, 0, 100)  # 阴影颜色设置

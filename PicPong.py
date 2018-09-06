@@ -1,4 +1,4 @@
-from PyQt5.QtCore import pyqtSlot, QSize, QRect
+from PyQt5.QtCore import pyqtSlot, QSize, QRect, Qt
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtWidgets import QWidget
 from QCandyUi.CandyWindow import colorful
@@ -112,4 +112,18 @@ class PicPong(QWidget):
 
     @pyqtSlot(QPixmap)
     def __slot_screen_capture(self, pixmap):
+        temp_img_path = 'screenShot.png'
+        pixmap.save(temp_img_path, 'png')
+        self.widgetUpload.run_upload_async(temp_img_path)
         self.widgetUpload.signal_img.emit(pixmap)
+
+    def keyPressEvent(self, e):
+        """
+        ctrl+alt+shift+F8
+        :param e:
+        :return:
+        """
+        if (e.modifiers() == Qt.ControlModifier | Qt.AltModifier | Qt.ShiftModifier) \
+                and (e.key() == Qt.Key_F8):
+            self.parentWidget().showMinimized()
+            self.on_pushButtonCut_clicked()
