@@ -1,13 +1,12 @@
-import ui_PicPong
-from PyQt5.QtCore import pyqtSlot, QFileInfo, pyqtSignal, QBuffer, QByteArray, QIODevice, QSize, QRect
-from PyQt5.QtGui import QMovie, QPixmap, QIcon
-from PyQt5.QtWidgets import QWidget, QFileDialog, QLabel
+from PyQt5.QtCore import pyqtSlot, QSize, QRect
+from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtWidgets import QWidget
 from QCandyUi.CandyWindow import colorful
-import requests
-import os
-import json
+
+import ui_PicPong
 from UploadWidget import UploadWidget
 from ViewWidget import ViewWidget
+from screen_capture import CaptureScreen
 
 # 资源路径
 ROOT_URL = './asset/'
@@ -71,7 +70,8 @@ class PicPong(QWidget):
 
     @pyqtSlot()
     def on_pushButtonCut_clicked(self):
-        print("cut")
+        self.capture = CaptureScreen()
+        self.capture.signal_complete_capture.connect(self.__slot_screen_capture)
 
     @pyqtSlot()
     def on_pushButtonView_clicked(self):
@@ -109,3 +109,7 @@ class PicPong(QWidget):
         icon_width = button.height() >> 1
         button.setIconSize(QSize(icon_width, icon_width))
         button.setFlat(True)
+
+    @pyqtSlot(QPixmap)
+    def __slot_screen_capture(self, pixmap):
+        self.widgetUpload.signal_img.emit(pixmap)

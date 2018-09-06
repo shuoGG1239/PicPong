@@ -1,14 +1,14 @@
+import json
+import os
 import threading
 
-import ui_UploadWidget
-from PyQt5.QtCore import pyqtSlot, QFileInfo, pyqtSignal, QBuffer, QByteArray, QIODevice, QSize
+from PyQt5.QtCore import pyqtSlot, QFileInfo, pyqtSignal, QSize
 from PyQt5.QtGui import QMovie, QPixmap, QIcon
 from PyQt5.QtWidgets import QWidget, QFileDialog, QLabel
-import requests
-import os
-import json
-from util import system_util
+
+import ui_UploadWidget
 from util import sm_util
+from util import system_util
 
 # 资源路径
 ROOT_URL = './asset/'

@@ -1,19 +1,14 @@
+import json
 import threading
+from PyQt5.QtCore import pyqtSlot, QSize, Qt
+from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtWidgets import QWidget
 
 import ui_ViewWidget
-from PyQt5.QtCore import pyqtSlot, QFileInfo, pyqtSignal, QBuffer, QByteArray, QIODevice, QSize, Qt
-from PyQt5.QtGui import QMovie, QPixmap, QIcon
-from PyQt5.QtWidgets import QWidget, QFileDialog, QLabel
-import requests
-import os
-import json
-from util import system_util
 from util import sm_util
 
 # 资源路径
 ROOT_URL = './asset/'
-UPLOAD_ICON_URL = 'upload.png'
-LOADING_GIF_URL = 'loading.gif'
 
 
 class ViewWidget(QWidget):
@@ -25,7 +20,7 @@ class ViewWidget(QWidget):
 
     @pyqtSlot(QPixmap)
     def slot_recv_img(self, pixmap):
-        self.set_image(pixmap)
+        self.__set_image(pixmap)
 
     @pyqtSlot(str)
     def slot_recv_resp(self, resp_json):
@@ -33,7 +28,15 @@ class ViewWidget(QWidget):
             ret = json.loads(resp_json)
             self.del_url = ret['delete']
 
-    def set_image(self, pixmap):
+    @pyqtSlot()
+    def on_pushButtonDel_clicked(self):
+        print('del: ' + self.del_url)
+        if self.del_url is not None and self.del_url is not '':
+            threading.Thread(target=sm_util.delete_img, args=(self.del_url,)).start()
+            self.del_url = ''
+            self.ui.labelImage.clear()
+
+    def __set_image(self, pixmap):
         """
         pixmap适应label
         :param label:
@@ -46,12 +49,6 @@ class ViewWidget(QWidget):
         else:
             label.setPixmap(pixmap)
 
-    @pyqtSlot()
-    def on_pushButtonDel_clicked(self):
-        print('del: ' + self.del_url)
-        if self.del_url is not None and self.del_url is not '':
-            sm_util.delete_img(self.del_url)
-
     def beautify_button(self, button, image_url):
         """
         美化按键
@@ -61,21 +58,6 @@ class ViewWidget(QWidget):
         """
         button.setText('')
         button.setIcon(QIcon(image_url))
-        icon_width = button.height() >> 1
-        button.setIconSize(QSize(icon_width, icon_width))
-        button.setFlat(True)
-
-    def beautify_button0(self, button, image_url):
-        """
-        美化按键(背景透明)
-        :param button:  QPushButton
-        :param image_url: str
-        :return: None
-        """
-        pic = QPixmap(image_url)
-        button.setText('')
-        button.setIcon(QIcon(pic))
-        button.setStyleSheet("QPushButton{background: transparent;border:none}")
         icon_width = button.height() >> 1
         button.setIconSize(QSize(icon_width, icon_width))
         button.setFlat(True)
