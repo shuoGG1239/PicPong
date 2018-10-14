@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QWidget
 from QCandyUi.CandyWindow import colorful
 
 import ui_PicPong
+from ConfigWidget import ConfigWidget
 from UploadWidget import UploadWidget
 from ViewWidget import ViewWidget
 from screen_capture import CaptureScreen
@@ -29,6 +30,9 @@ class PicPong(QWidget):
         self.widgetView = ViewWidget(self)
         self.widgetView.setGeometry(QRect(41, 0, 450, 360))
         self.widgetView.hide()
+        self.widgetConfig = ConfigWidget(self)
+        self.widgetConfig.setGeometry(QRect(41, 0, 450, 360))
+        self.widgetConfig.hide()
         self.widgetUpload.signal_img.connect(self.widgetView.slot_recv_img)
         self.widgetUpload.signal_response.connect(self.widgetView.slot_recv_resp)
         self.__init_style()
@@ -41,8 +45,10 @@ class PicPong(QWidget):
     def __btn_style3(self):
         self.beautify_button3(self.ui.pushButtonUp, ROOT_URL, 'up.png', 'up_hover.png', 'up.png', 'up.png')
         self.beautify_button3(self.ui.pushButtonView, ROOT_URL, 'view.png', 'view_hover.png', 'view.png', 'view.png')
-        self.beautify_button3(self.ui.pushButtonCut, ROOT_URL, 'scissors.png', 'scissors_hover.png', 'scissors.png', 'scissors.png')
-        self.beautify_button3(self.ui.pushButtonConfig, ROOT_URL, 'config.png', 'config_hover.png', 'config.png', 'config.png')
+        self.beautify_button3(self.ui.pushButtonCut, ROOT_URL, 'scissors.png', 'scissors_hover.png', 'scissors.png',
+                              'scissors.png')
+        self.beautify_button3(self.ui.pushButtonConfig, ROOT_URL, 'config.png', 'config_hover.png', 'config.png',
+                              'config.png')
 
     def __btn_style1(self):
         self.beautify_button(self.ui.pushButtonUp, ROOT_URL + 'set.png')
@@ -53,34 +59,39 @@ class PicPong(QWidget):
     def beautify_button3(self, button, root, norm, hover, press, disable):
         qss = str()
         qss += "QPushButton{background:transparent; background-image:url(%s); border:none}" % (
-            root + norm)
+                root + norm)
         qss += "QPushButton:hover{background:transparent; background-image:url(%s)}" % (
-            root + hover)
+                root + hover)
         qss += "QPushButton:pressed{background:transparent; background-image:url(%s)}" % (
-            root + press)
+                root + press)
         qss += "QPushButton:disabled{background:transparent; background-image:url(%s)}" % (
-            root + disable)
+                root + disable)
         button.setStyleSheet(qss)
         button.setText('')
 
     @pyqtSlot()
     def on_pushButtonUp_clicked(self):
         self.widgetUpload.show()
+        self.widgetConfig.hide()
         self.widgetView.hide()
 
     @pyqtSlot()
     def on_pushButtonCut_clicked(self):
+        self.minimize()
         self.capture = CaptureScreen()
         self.capture.signal_complete_capture.connect(self.__slot_screen_capture)
 
     @pyqtSlot()
     def on_pushButtonView_clicked(self):
         self.widgetUpload.hide()
+        self.widgetConfig.hide()
         self.widgetView.show()
 
     @pyqtSlot()
     def on_pushButtonConfig_clicked(self):
-        print("config")
+        self.widgetConfig.show()
+        self.widgetUpload.hide()
+        self.widgetView.hide()
 
     def beautify_button(self, button, image_url):
         """
@@ -125,5 +136,9 @@ class PicPong(QWidget):
         """
         if (e.modifiers() == Qt.ControlModifier | Qt.AltModifier | Qt.ShiftModifier) \
                 and (e.key() == Qt.Key_F8):
-            self.parentWidget().showMinimized()
+            self.minimize()
             self.on_pushButtonCut_clicked()
+
+    def minimize(self):
+        if self.widgetConfig.minWhenCut:
+            self.parentWidget().showMinimized()
