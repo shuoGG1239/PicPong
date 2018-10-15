@@ -35,6 +35,7 @@ class PicPong(QWidget):
         self.widgetConfig.hide()
         self.widgetUpload.signal_img.connect(self.widgetView.slot_recv_img)
         self.widgetUpload.signal_response.connect(self.widgetView.slot_recv_resp)
+        self.widgetUpload.signal_fail.connect(self.__slot_showTip)
         self.__init_style()
 
     def __init_style(self):
@@ -55,6 +56,34 @@ class PicPong(QWidget):
         self.beautify_button(self.ui.pushButtonView, ROOT_URL + 'view.png')
         self.beautify_button(self.ui.pushButtonCut, ROOT_URL + 'scissors.png')
         self.beautify_button(self.ui.pushButtonConfig, ROOT_URL + 'config.png')
+
+    def beautify_button(self, button, image_url):
+        """
+        美化按键
+        :param button:  QPushButton
+        :param image_url: str
+        :return: None
+        """
+        button.setText('')
+        button.setIcon(QIcon(image_url))
+        icon_width = button.height() >> 1
+        button.setIconSize(QSize(icon_width, icon_width))
+        button.setFlat(True)
+
+    def beautify_button0(self, button, image_url):
+        """
+        美化按键(背景透明)
+        :param button:  QPushButton
+        :param image_url: str
+        :return: None
+        """
+        pic = QPixmap(image_url)
+        button.setText('')
+        button.setIcon(QIcon(pic))
+        button.setStyleSheet("QPushButton{background: transparent;border:none}")
+        icon_width = button.height() >> 1
+        button.setIconSize(QSize(icon_width, icon_width))
+        button.setFlat(True)
 
     def beautify_button3(self, button, root, norm, hover, press, disable):
         qss = str()
@@ -93,33 +122,9 @@ class PicPong(QWidget):
         self.widgetUpload.hide()
         self.widgetView.hide()
 
-    def beautify_button(self, button, image_url):
-        """
-        美化按键
-        :param button:  QPushButton
-        :param image_url: str
-        :return: None
-        """
-        button.setText('')
-        button.setIcon(QIcon(image_url))
-        icon_width = button.height() >> 1
-        button.setIconSize(QSize(icon_width, icon_width))
-        button.setFlat(True)
-
-    def beautify_button0(self, button, image_url):
-        """
-        美化按键(背景透明)
-        :param button:  QPushButton
-        :param image_url: str
-        :return: None
-        """
-        pic = QPixmap(image_url)
-        button.setText('')
-        button.setIcon(QIcon(pic))
-        button.setStyleSheet("QPushButton{background: transparent;border:none}")
-        icon_width = button.height() >> 1
-        button.setIconSize(QSize(icon_width, icon_width))
-        button.setFlat(True)
+    @pyqtSlot(str)
+    def __slot_showTip(self, msg):
+        self.parent().showTip(msg, 'red')
 
     @pyqtSlot(QPixmap)
     def __slot_screen_capture(self, pixmap):

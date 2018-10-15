@@ -26,7 +26,7 @@ class ViewWidget(QWidget):
     def slot_recv_resp(self, resp_json):
         if resp_json is not '':
             ret = json.loads(resp_json)
-            self.del_url = ret['delete']
+            self.del_url = ret.get('delete')
 
     @pyqtSlot()
     def on_pushButtonDel_clicked(self):

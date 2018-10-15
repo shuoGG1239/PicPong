@@ -17,6 +17,7 @@ LOADING_GIF_URL = 'loading.gif'
 
 
 class UploadWidget(QWidget):
+    signal_fail = pyqtSignal(str)
     signal_response = pyqtSignal(str)  # sm应答信号
     signal_img = pyqtSignal(QPixmap)
 
@@ -50,18 +51,19 @@ class UploadWidget(QWidget):
         三态button
         :return:
         """
-        self.beautify_button3(self.ui.pushButtonUpload, ROOT_URL, 'upload.png', 'upload_hover.png', 'upload.png', 'upload.png')
+        self.beautify_button3(self.ui.pushButtonUpload, ROOT_URL, 'upload.png', 'upload_hover.png', 'upload.png',
+                              'upload.png')
 
     def beautify_button3(self, button, root, norm, hover, press, disable):
         qss = str()
         qss += "QPushButton{background:transparent; background-image:url(%s); border:none}" % (
-            root + norm)
+                root + norm)
         qss += "QPushButton:hover{background:transparent; background-image:url(%s)}" % (
-            root + hover)
+                root + hover)
         qss += "QPushButton:pressed{background:transparent; background-image:url(%s)}" % (
-            root + press)
+                root + press)
         qss += "QPushButton:disabled{background:transparent; background-image:url(%s)}" % (
-            root + disable)
+                root + disable)
         button.setStyleSheet(qss)
         button.setText('')
 
@@ -108,6 +110,8 @@ class UploadWidget(QWidget):
         try:
             result_dict = sm_util.upload_img(image_path)
             return result_dict['url']
+        except:
+            self.signal_fail.emit('上传失败!')
         finally:
             self.signal_response.emit(json.dumps(result_dict))
 
