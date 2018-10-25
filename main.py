@@ -8,7 +8,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     mainWindow = PicPong()
     mainWindow.setWindowTitle('PicPong')
-    mainWindow.setWindowIcon(QIcon('shuoGG_re'))
+    mainWindow.setWindowIcon(QIcon('./asset/myicon.ico'))
     mainWindow.setStyleSheet("QFrame#WindowWithTitleBar{background: #33CCCC}")
     mainWindow.setStyleSheet("QWidget#uploadWidget{background: #FFFFFF}")
     # fixSize
