@@ -37,6 +37,7 @@ class PicPong(QWidget):
         self.widgetUpload.signal_response.connect(self.widgetView.slot_recv_resp)
         self.widgetUpload.signal_fail.connect(self.__slot_showTip)
         self.__init_style()
+        self.ui.pushButtonCut.setToolTip('ctrl+shift+alt+F8')
 
     def __init_style(self):
         self.ui.widgetSide.setStyleSheet("QWidget{background: #33CCCC;border:none}")
