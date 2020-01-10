@@ -9,7 +9,8 @@
 * PyQt5
 * pywin32
 
-
+## 配置
+* 根目录的`config.json`里面的`SecretToken`填自己的sm.ms的Token, 懒得申请可以我的自己的(默认)... 
 
 ## 效果
 

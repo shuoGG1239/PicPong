@@ -120,9 +120,10 @@ class UploadWidget(QWidget):
         self.loadingLabel.hide()
         if resp_json is not '':
             ret = json.loads(resp_json)
-            md_image = '![' + ret['filename'] + '](' + ret['url'] + ')'
-            self.ui.lineEdit.setText(md_image)
-            system_util.set_clipboard_text(md_image)
+            if ret['success'] is True:
+                md_image = '![' + ret['filename'] + '](' + ret['url'] + ')'
+                self.ui.lineEdit.setText(md_image)
+                system_util.set_clipboard_text(md_image)
 
     def __init_loading_gif(self):
         """
