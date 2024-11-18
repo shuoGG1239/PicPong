@@ -15,8 +15,11 @@ def upload_img(image_path):
         'format': 'json'
     }
     multi_files = list(map(lambda x: (x[0], (urllib.parse.quote(os.path.split(x[1])[1]), open(x[1], 'rb'))), files_map))
+    token = conf_json["SecretToken"]
+    if len(token) == 0:
+        raise Exception('SecretToken为空,请到https://sm.ms申请Token并填入代码文件夹中config.json的SecretToken')
     header = {
-        "Authorization": conf_json["SecretToken"]
+        "Authorization": token
     }
     resp = requests.post("https://sm.ms/api/v2/upload", data=params, files=multi_files, headers=header)
     print(resp.text)
