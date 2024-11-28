@@ -1,11 +1,9 @@
 # PicPong
 * 现在markdown越用越频繁了, md好用是好用, 但就是贴图片的时候有些麻烦: 要截图->上传图片->复制图片url, 于是做了个简单的工具: `截图->传图->生成图片url`三合一
 
-
 ## 依赖
-* QCandyUi
-* PyQt5
-* pywin32
+* python版本建议3.10
+* package依赖见`requirements.txt`
 
 ## 配置
 * 根目录的`config.json`里面的`SecretToken`填自己的sm.ms的Token, 如果没有则到https://sm.ms 自行申请
