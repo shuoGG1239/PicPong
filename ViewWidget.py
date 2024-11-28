@@ -24,14 +24,14 @@ class ViewWidget(QWidget):
 
     @pyqtSlot(str)
     def slot_recv_resp(self, resp_json):
-        if resp_json is not '':
+        if resp_json != '':
             ret = json.loads(resp_json)
             self.del_url = ret.get('delete')
 
     @pyqtSlot()
     def on_pushButtonDel_clicked(self):
         print('del: ' + self.del_url)
-        if self.del_url is not None and self.del_url is not '':
+        if self.del_url is not None and self.del_url != '':
             threading.Thread(target=sm_util.delete_img, args=(self.del_url,)).start()
             self.del_url = ''
             self.ui.labelImage.clear()
