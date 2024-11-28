@@ -26,5 +26,5 @@ def set_clipboard_text(text):
     """
     win32clipboard.OpenClipboard()
     win32clipboard.EmptyClipboard()
-    win32clipboard.SetClipboardData(win32con.CF_UNICODETEXT, text)
+    win32clipboard.SetClipboardText(text)
     win32clipboard.CloseClipboard()
